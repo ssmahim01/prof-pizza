@@ -8,8 +8,8 @@ interface HeaderLayoutProps {
 const HeaderLayout: React.FC<HeaderLayoutProps> = ({ children }) => {
   return (
     <>
-      <Navbar />
-      <main className="pt-[700px]">{children}</main>{" "}
+      <Navbar isScrolled={false} />
+      <main>{children}</main>{" "}
     </>
   );
 };
