@@ -5,8 +5,6 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingCart } from "lucide-react";
 import Image from "next/image";
-
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 // Menu items
@@ -30,78 +28,54 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
   return (
     <>
       {/* Navbar */}
-      <motion.nav
-        className={cn(
-          "w-full bg-red-600 flex items-center",
-          isScrolled ? "h-[80px]" : "h-[500px]"
-        )}
+      <motion.div
+        className="w-full bg-red-600 fixed top-0 left-0 z-50 overflow-hidden"
+        animate={{ height: isScrolled ? 80 : 500 }}
+        transition={{ type: "spring", stiffness: 120, damping: 20 }}
       >
         <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between h-full">
+          {/* === Content when scrolled === */}
           {isScrolled ? (
             <>
-              {/* Scrolled State: Logo, Delivery Text, Cart, Menu */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Link href="/">
-                  <Image
-                    width={60}
-                    height={60}
-                    priority
-                    quality={100}
-                    src="/Logo-ProfPizza.png"
-                    alt="Prof Pizza Logo"
-                  />
-                </Link>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, delay: 0.1 }}
-                className="flex-1 flex items-center justify-center"
-              >
-                <div className="font-semibold">
-                  <Image
-                    src={"/Banner-LT-1024x171.png"}
-                    width={200}
-                    height={200}
-                    alt="Banner LT"
-                    className="object-contain"
-                  />
-                </div>
-              </motion.div>
+              <Link href="/">
+                <Image
+                  width={60}
+                  height={60}
+                  priority
+                  quality={100}
+                  src="/Logo-ProfPizza.png"
+                  alt="Prof Pizza Logo"
+                />
+              </Link>
+              <div className="flex-1 flex items-center justify-center">
+                <Image
+                  src={"/Banner-LT-1024x171.png"}
+                  width={200}
+                  height={40}
+                  alt="Banner LT"
+                  className="object-contain"
+                />
+              </div>
               <div className="flex items-center space-x-2">
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.2 }}
-                  className="flex items-center text-white text-sm"
-                >
+                <div className="flex items-center text-white text-sm">
                   <ShoppingCart className="h-5 w-5 mr-1" />
                   <span>0.00 $</span>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.3 }}
-                >
-                  <div className="flex items-center h-16 w-16">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setIsOpen(true)}
-                      className="fixed top-52 bg-black text-white rounded-full p-5 text-lg font-medium hover:bg-gray-800 hover:text-white/90 hover:transform hover:scale-95 hover:animate-spin transition-all duration-300 w-20 h-20"
-                    >
-                      <span className="hover:animate-spin">meniu</span>
-                    </Button>
-                  </div>
-                </motion.div>
+                </div>
+                <div className="flex items-center h-16 w-16">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setIsOpen(true)}
+                    className="fixed top-52 bg-black text-white rounded-full p-5 text-lg font-medium hover:bg-gray-800 hover:text-white/90 hover:transform hover:scale-95 hover:animate-spin transition-all duration-300 w-20 h-20"
+                  >
+                    <span className="hover:animate-spin">meniu</span>
+                  </Button>
+                </div>
               </div>
             </>
           ) : (
             <>
+              {/* === Content before scroll === */}
               <div className="flex-1 flex items-center justify-center space-x-12">
                 <Link href="/">
                   <Image
@@ -125,23 +99,19 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
                 </Link>
               </div>
               <div className="flex items-center h-full w-16">
-                {!isScrolled && (
-                  <div className="flex items-center h-16 w-16">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setIsOpen(true)}
-                      className="bg-black text-white rounded-full p-5 text-lg font-medium hover:bg-gray-800 hover:text-white/90 hover:transform hover:scale-95 hover:animate-spin transition-all duration-300 w-20 h-20"
-                    >
-                      <span className="hover:animate-spin">meniu</span>
-                    </Button>
-                  </div>
-                )}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsOpen(true)}
+                  className="bg-black text-white rounded-full p-5 text-lg font-medium hover:bg-gray-800 hover:text-white/90 hover:transform hover:scale-95 hover:animate-spin transition-all duration-300 w-20 h-20"
+                >
+                  <span className="hover:animate-spin">meniu</span>
+                </Button>
               </div>
             </>
           )}
         </div>
-      </motion.nav>
+      </motion.div>
 
       {/* Full-Screen Menu */}
       <AnimatePresence>
