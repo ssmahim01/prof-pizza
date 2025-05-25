@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar";
+import Footer from "../Footer";
 
 interface HeaderLayoutProps {
   children: React.ReactNode;
@@ -22,6 +23,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ children }) => {
     <>
       <Navbar isScrolled={isScrolled} />
       <main className={`${isScrolled ? "" : "mt-[420px]"}`}>{children}</main>
+      <Footer />
     </>
   );
 };
