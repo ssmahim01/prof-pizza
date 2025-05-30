@@ -22,7 +22,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ children }) => {
   return (
     <>
       <Navbar isScrolled={isScrolled} />
-      <main className={`${isScrolled ? "" : "mt-[420px]"}`}>{children}</main>
+      <main className={`${isScrolled ? "" : "mt-[370px]"}`}>{children}</main>
       <Footer />
     </>
   );
