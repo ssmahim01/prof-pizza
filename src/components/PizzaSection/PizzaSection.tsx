@@ -411,44 +411,39 @@ const PizzaSection: React.FC = () => {
             {t("withCookedHam")}
           </h2>
           {pizzaListDisplayItems.map((item, index) => (
-            <Dialog
+            <div
               key={item.modalDataId}
-              onOpenChange={(open) => {
-                if (!open) setSelectedPizzaDataForModal(null);
-              }}
+              className={`w-full flex items-center gap-2 sm:gap-4 p-2 sm:p-3 rounded-md
+                         ${
+                           index % 2 !== 0
+                             ? "flex-row-reverse md:flex-row-reverse"
+                             : "flex-row md:flex-row"
+                         } 
+                         md:justify-start md:pl-${
+                           index % 2 !== 0 ? "0" : "12"
+                         } lg:pl-${index % 2 !== 0 ? "0" : "44"}`}
             >
-              <DialogTrigger
-                asChild
-                onClick={() => handleItemClick(item.modalDataId)}
-              >
-                <div
-                  className={`w-full flex items-center gap-2 sm:gap-4 p-2 sm:p-3 rounded-md cursor-pointer ${
-                    index % 2 !== 0
-                      ? "flex-row-reverse md:flex-row-reverse"
-                      : "flex-row md:flex-row"
-                  }  md:justify-start md:pl-${
-                    index % 2 !== 0 ? "0" : "12"
-                  } lg:pl-${index % 2 !== 0 ? "0" : "44"}`}
-                >
-                  <div className="flex flex-col items-center gap-y-2 sm:gap-y-3 flex-shrink-0">
-                    <Image
-                      width={40}
-                      height={40}
-                      priority
-                      quality={100}
-                      src={item.numberImage || "/placeholder.svg"}
-                      alt={`Numeris ${index + 1}`}
-                      className="object-contain w-8 h-8 sm:w-10 sm:h-10"
-                    />
-                    <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                      {item.text.map((line, i) => (
-                        <span key={i} className="text-black text-xs sm:text-sm">
-                          {line}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="flex-grow flex justify-center md:flex-grow-0 md:justify-start">
+              <div className="flex flex-col items-center gap-y-2 sm:gap-y-3 flex-shrink-0">
+                <Image
+                  width={40}
+                  height={40}
+                  priority
+                  quality={100}
+                  src={item.numberImage || "/placeholder.svg"}
+                  alt={`Numeris ${index + 1}`}
+                  className="object-contain w-8 h-8 sm:w-10 sm:h-10"
+                />
+                <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                  {item.text.map((line, i) => (
+                    <span key={i} className="text-black text-xs sm:text-sm">
+                      {line}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="flex-grow flex justify-center md:flex-grow-0 md:justify-start">
+                <Dialog>
+                  <DialogTrigger asChild>
                     <Image
                       width={200}
                       height={200}
@@ -456,12 +451,13 @@ const PizzaSection: React.FC = () => {
                       quality={100}
                       src={item.image || "/placeholder.svg"}
                       alt={`Pica ${index + 1}`}
-                      className="object-contain w-32 h-32 sm:w-40 sm:h-40 md:w-[200px] lg:w-[250px] md:h-auto rounded-md"
+                      className="object-contain w-32 h-32 sm:w-40 sm:h-40 md:w-[200px] lg:w-[250px] md:h-auto rounded-md cursor-pointer hover:scale-105 transition-transform duration-300"
+                      onClick={() => handleItemClick(item.modalDataId)}
                     />
-                  </div>
-                </div>
-              </DialogTrigger>
-            </Dialog>
+                  </DialogTrigger>
+                </Dialog>
+              </div>
+            </div>
           ))}
         </div>
       </div>

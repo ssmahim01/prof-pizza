@@ -8,6 +8,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAppSelector } from "@/lib/hooks";
 
 interface NavbarProps {
   isScrolled?: boolean;
@@ -16,6 +17,9 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ isScrolled = false }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const { t } = useLanguage();
+
+  // Get cart data from Redux store
+  const { totalItems, totalPrice } = useAppSelector((state) => state.cart);
 
   // Menu items with translations
   const menuItems = [
@@ -27,6 +31,8 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled = false }) => {
     { name: t("kava"), href: "/kava" },
     { name: t("ledai"), href: "/ledai" },
   ];
+
+  const formatPrice = (price: number) => price.toFixed(2) + " €";
 
   return (
     <>
@@ -62,9 +68,14 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled = false }) => {
                 />
               </div>
               <div className="flex items-center space-x-2">
-                <div className="flex items-center text-white text-sm">
-                  <ShoppingCart className="h-5 w-5 mr-1" />
-                  <span>0.00 $</span>
+                <div className="flex items-center text-white text-sm relative">
+                  <ShoppingCart className="h-5 w-5 mr-3" />
+                  <span>{formatPrice(totalPrice)}</span>
+                  {totalItems > 0 && (
+                    <span className="absolute -top-3 left-2 bg-yellow-400 text-black text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                      {totalItems}
+                    </span>
+                  )}
                 </div>
                 <div className="flex items-center">
                   <Button

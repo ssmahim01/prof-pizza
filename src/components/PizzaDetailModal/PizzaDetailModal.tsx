@@ -10,9 +10,13 @@ import {
   DialogHeader,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ShoppingCart, Plus, Minus } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAppDispatch } from "@/lib/hooks";
+import { addToCart } from "@/redux/features/cart/cartSlice";
 import type { PizzaModalData } from "@/types/pizza";
+import type { CartItem } from "@/redux/features/cart/cartSlice";
 
 interface PizzaDetailModalProps {
   pizzaData: PizzaModalData | null;
@@ -26,6 +30,8 @@ const PizzaDetailModal: React.FC<PizzaDetailModalProps> = ({
   onOpenChange,
 }) => {
   const { t } = useLanguage();
+  const dispatch = useAppDispatch();
+
   const [currentSize, setCurrentSize] = useState<{
     name: string;
     price: number;
@@ -109,6 +115,37 @@ const PizzaDetailModal: React.FC<PizzaDetailModalProps> = ({
     }
   };
 
+  const handleAddToCart = () => {
+    if (!pizzaData) return;
+
+    const selectedExtras = currentExtras
+      .map((extraId) => {
+        const extra = pizzaData.extras.find((e) => e.id === extraId);
+        return extra
+          ? { id: extra.id, name: extra.name, price: extra.price }
+          : null;
+      })
+      .filter(Boolean) as Array<{ id: string; name: string; price: number }>;
+
+    const cartItem: CartItem = {
+      id: `${pizzaData.id}-${currentSize.name}-${
+        currentSauce.name
+      }-${Date.now()}`,
+      name: pizzaData.name,
+      image: pizzaData.img,
+      basePrice: totalPrice / quantity,
+      size: currentSize,
+      sauce: currentSauce,
+      extras: selectedExtras,
+      quantity,
+      totalPrice,
+      type: "pizza",
+    };
+
+    dispatch(addToCart(cartItem));
+    onOpenChange(false);
+  };
+
   if (!pizzaData) return null;
 
   const extrasLeft = pizzaData.extras.filter((e) => e.column === "left");
@@ -116,7 +153,7 @@ const PizzaDetailModal: React.FC<PizzaDetailModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[95vw] md:max-w-md lg:max-w-lg w-full p-0 m-0 max-h-[95vh] flex flex-col bg-transparent border-none shadow-none outline-none ring-0 focus:ring-0">
+      <DialogContent className="w-full p-0 m-0 flex flex-col bg-transparent border-none shadow-none outline-none ring-0 focus:ring-0">
         <DialogHeader className="bg-black text-white p-2 flex flex-row items-center justify-between rounded-t-lg">
           <Image
             src="https://res.cloudinary.com/daspo1tk3/image/upload/v1751274816/Logo-ProfPizza_d72bmu.png"
@@ -126,143 +163,148 @@ const PizzaDetailModal: React.FC<PizzaDetailModalProps> = ({
           />
         </DialogHeader>
 
-        <div className="bg-[#a16a6a] p-3 flex-grow overflow-y-auto space-y-2 text-white">
-          <div className="relative flex items-start gap-3">
-            <Image
-              src={pizzaData.img || "/placeholder.svg"}
-              alt={pizzaData.name}
-              width={100}
-              height={100}
-              className="rounded-md object-contain flex-shrink-0 mt-1 w-24 h-24 sm:w-28 sm:h-28"
-            />
-            <div className="flex-1 pt-1">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="bg-black text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
-                  {pizzaData.itemNumberForModal}
+        <ScrollArea className="bg-[#a16a6a] py-5 px-6 flex-grow h-[400px] max-h-[70vh]">
+          <div className="space-y-2 text-white">
+            <div className="relative flex flex-wrap items-start gap-3">
+              <Image
+                src={pizzaData.img || "/placeholder.svg"}
+                alt={pizzaData.name}
+                width={130}
+                height={130}
+                priority
+                quality={100}
+                className="rounded-md object-contain flex-shrink-0 mt-1 w-24 h-24 sm:w-28 sm:h-28"
+              />
+              <div className="flex-1 pt-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="bg-black text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                    {pizzaData.itemNumberForModal}
+                  </div>
+                  <h3 className="text-sm font-semibold">{pizzaData.name}</h3>
                 </div>
-                <h3 className="text-sm font-semibold">{pizzaData.name}</h3>
-              </div>
-              <p className="text-xs leading-tight opacity-90 mb-1">
-                {pizzaData.desc}
-              </p>
-              {pizzaData.baseIngredientsModal.map((ing, i) => (
-                <p key={i} className="text-xs leading-tight opacity-90">
-                  {ing}
+                <p className="text-xs leading-tight opacity-90 mb-1">
+                  {pizzaData.desc}
                 </p>
-              ))}
-              <p className="text-xs leading-tight opacity-90 mt-0.5">
-                {pizzaData.baseSauceModal}
+                {pizzaData.baseIngredientsModal.map((ing, i) => (
+                  <p key={i} className="text-xs leading-tight opacity-90">
+                    {ing}
+                  </p>
+                ))}
+                <p className="text-xs leading-tight opacity-90 mt-0.5">
+                  {pizzaData.baseSauceModal}
+                </p>
+              </div>
+              <div className="absolute top-0 right-0 bg-red-600 text-white rounded-full w-16 h-16 sm:w-[70px] sm:h-[70px] flex flex-col items-center justify-center text-sm font-bold p-1 text-center leading-tight shadow-md">
+                <ShoppingCart className="w-3 h-3 mb-0.5" />
+                <span>{formatPrice(totalPrice)}</span>
+              </div>
+            </div>
+
+            {/* Size Selection */}
+            <div>
+              <div className="flex justify-center items-center flex-wrap mt-8 mb-5 gap-1.5">
+                {pizzaData.sizes.map((size) => (
+                  <Button
+                    key={size.name}
+                    variant={
+                      currentSize.name === size.name ? "secondary" : "outline"
+                    }
+                    onClick={() => setCurrentSize(size)}
+                    className={`h-auto py-1 px-2.5 text-[10px] rounded-full ${
+                      currentSize.name === size.name
+                        ? "bg-white text-black border-white"
+                        : "bg-transparent text-white border-white/50 hover:bg-white/10 hover:text-white"
+                    }`}
+                  >
+                    {size.name}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Sauce Selection */}
+            <div>
+              <div className="flex justify-center items-baseline">
+                <h4 className="font-semibold text-xs opacity-90 mb-1 mt-2 text-center">
+                  {t("sauce")}
+                </h4>
+                <span className="text-[9px] opacity-70 ml-1">
+                  (
+                  {formatPrice(
+                    pizzaData.sauces.find(
+                      (s) => s.name !== pizzaData.defaultSauceName
+                    )?.price || 0
+                  )}
+                  )
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-1.5 justify-center">
+                {pizzaData.sauces.map((sauce) => (
+                  <Button
+                    key={sauce.name}
+                    variant={
+                      currentSauce.name === sauce.name ? "secondary" : "outline"
+                    }
+                    onClick={() => setCurrentSauce(sauce)}
+                    className={`h-auto py-1 px-2.5 text-[10px] rounded-full ${
+                      currentSauce.name === sauce.name
+                        ? "bg-white text-black border-white"
+                        : "bg-transparent text-white border-white/50 hover:bg-white/10 hover:text-white"
+                    }`}
+                  >
+                    {sauce.name}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Extras Selection */}
+            <div>
+              <div className="flex justify-between items-baseline mb-1 mt-2">
+                <h4 className="font-semibold text-xs opacity-90">
+                  {t("extras")}{" "}
+                  <span className="text-[9px] opacity-70">
+                    ({formatPrice(extrasLeft[0]?.price || 0)})
+                  </span>
+                </h4>
+                <h4 className="font-semibold text-xs opacity-90">
+                  <span className="text-[9px] opacity-70">
+                    ({formatPrice(extrasRight[0]?.price || 0)})
+                  </span>
+                </h4>
+              </div>
+              <div className="grid grid-cols-2 gap-x-1.5 gap-y-1">
+                {[extrasLeft, extrasRight].map((columnExtras, colIdx) => (
+                  <div key={colIdx} className="space-y-1">
+                    {columnExtras.map((extra) => (
+                      <Button
+                        key={extra.id}
+                        variant={
+                          currentExtras.includes(extra.id)
+                            ? "secondary"
+                            : "outline"
+                        }
+                        onClick={() => handleExtraToggle(extra.id)}
+                        className={`w-full h-auto py-1 px-2 text-[10px] rounded-full justify-start truncate ${
+                          currentExtras.includes(extra.id)
+                            ? "bg-white text-black border-white"
+                            : "bg-transparent text-white border-white/50 hover:bg-white/10 hover:text-white"
+                        }`}
+                      >
+                        {extra.text}
+                      </Button>
+                    ))}
+                  </div>
+                ))}
+              </div>
+              <p className="text-[9px] text-white/60 mt-1 text-center">
+                {t("leftUpToFree")} {pizzaData.maxFreeLeftExtras} {t("free")}.{" "}
+                {t("rightUpToFree")} {pizzaData.maxFreeRightExtras} {t("free")}.
               </p>
             </div>
-            <div className="absolute top-0 right-0 bg-red-600 text-white rounded-full w-16 h-16 sm:w-[70px] sm:h-[70px] flex flex-col items-center justify-center text-sm font-bold p-1 text-center leading-tight shadow-md">
-              <ShoppingCart className="w-3 h-3 mb-0.5" />
-              <span>{formatPrice(totalPrice)}</span>
-            </div>
           </div>
-
-          {/* Size Selection */}
-          <div>
-            <div className="flex justify-center items-center flex-wrap mt-8 mb-5 gap-1.5">
-              {pizzaData.sizes.map((size) => (
-                <Button
-                  key={size.name}
-                  variant={
-                    currentSize.name === size.name ? "secondary" : "outline"
-                  }
-                  onClick={() => setCurrentSize(size)}
-                  className={`h-auto py-1 px-2.5 text-[10px] rounded-full ${
-                    currentSize.name === size.name
-                      ? "bg-white text-black border-white"
-                      : "bg-transparent text-white border-white/50 hover:bg-white/10 hover:text-white"
-                  }`}
-                >
-                  {size.name}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          {/* Sauce Selection */}
-          <div>
-            <div className="flex justify-center items-baseline">
-              <h4 className="font-semibold text-xs opacity-90 mb-1 mt-2 text-center">
-                {t("sauce")}
-              </h4>
-              <span className="text-[9px] opacity-70 ml-1">
-                (
-                {formatPrice(
-                  pizzaData.sauces.find(
-                    (s) => s.name !== pizzaData.defaultSauceName
-                  )?.price || 0
-                )}
-                )
-              </span>
-            </div>
-            <div className="flex flex-wrap gap-1.5 justify-center">
-              {pizzaData.sauces.map((sauce) => (
-                <Button
-                  key={sauce.name}
-                  variant={
-                    currentSauce.name === sauce.name ? "secondary" : "outline"
-                  }
-                  onClick={() => setCurrentSauce(sauce)}
-                  className={`h-auto py-1 px-2.5 text-[10px] rounded-full ${
-                    currentSauce.name === sauce.name
-                      ? "bg-white text-black border-white"
-                      : "bg-transparent text-white border-white/50 hover:bg-white/10 hover:text-white"
-                  }`}
-                >
-                  {sauce.name}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          {/* Extras Selection */}
-          <div>
-            <div className="flex justify-between items-baseline mb-1 mt-2">
-              <h4 className="font-semibold text-xs opacity-90">
-                {t("extras")}{" "}
-                <span className="text-[9px] opacity-70">
-                  ({formatPrice(extrasLeft[0]?.price || 0)})
-                </span>
-              </h4>
-              <h4 className="font-semibold text-xs opacity-90">
-                <span className="text-[9px] opacity-70">
-                  ({formatPrice(extrasRight[0]?.price || 0)})
-                </span>
-              </h4>
-            </div>
-            <div className="grid grid-cols-2 gap-x-1.5 gap-y-1">
-              {[extrasLeft, extrasRight].map((columnExtras, colIdx) => (
-                <div key={colIdx} className="space-y-1">
-                  {columnExtras.map((extra) => (
-                    <Button
-                      key={extra.id}
-                      variant={
-                        currentExtras.includes(extra.id)
-                          ? "secondary"
-                          : "outline"
-                      }
-                      onClick={() => handleExtraToggle(extra.id)}
-                      className={`w-full h-auto py-1 px-2 text-[10px] rounded-full justify-start truncate ${
-                        currentExtras.includes(extra.id)
-                          ? "bg-white text-black border-white"
-                          : "bg-transparent text-white border-white/50 hover:bg-white/10 hover:text-white"
-                      }`}
-                    >
-                      {extra.text}
-                    </Button>
-                  ))}
-                </div>
-              ))}
-            </div>
-            <p className="text-[9px] text-white/60 mt-1 text-center">
-              {t("leftUpToFree")} {pizzaData.maxFreeLeftExtras} {t("free")}.{" "}
-              {t("rightUpToFree")} {pizzaData.maxFreeRightExtras} {t("free")}.
-            </p>
-          </div>
-        </div>
+          <ScrollBar orientation="vertical" />
+        </ScrollArea>
 
         <DialogFooter className="bg-black/80 p-2 border-t border-white/20 flex flex-row items-center justify-between gap-2 rounded-b-lg">
           <div className="flex items-center gap-1">
@@ -289,6 +331,7 @@ const PizzaDetailModal: React.FC<PizzaDetailModalProps> = ({
           <Button
             size="sm"
             className="flex-grow bg-red-600 hover:bg-red-700 text-white text-xs py-2 h-auto"
+            onClick={handleAddToCart}
           >
             <ShoppingCart className="w-3.5 h-3.5 mr-1.5" />
             {t("addToCart")}

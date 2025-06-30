@@ -10,8 +10,12 @@ import {
   DialogHeader,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ShoppingCart, Plus, Minus } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAppDispatch } from "@/lib/hooks";
+import { addToCart } from "@/redux/features/cart/cartSlice";
+import type { CartItem } from "@/redux/features/cart/cartSlice";
 
 interface MixPicaData {
   name: string;
@@ -34,6 +38,7 @@ const MixPicaDetailModal: React.FC<MixPicaDetailModalProps> = ({
   onOpenChange,
 }) => {
   const { t } = useLanguage();
+  const dispatch = useAppDispatch();
 
   // Static data for MIX Pica with translations
   const mixPicaDetails: MixPicaData = {
@@ -129,12 +134,42 @@ const MixPicaDetailModal: React.FC<MixPicaDetailModalProps> = ({
     );
   };
 
+  const handleAddToCart = () => {
+    const selectedExtras = currentExtras
+      .map((extraName, index) => {
+        const extra = pizza.extras.find((e) => e.name === extraName);
+        return extra
+          ? { id: `mix-${index}`, name: extra.name, price: extra.price }
+          : null;
+      })
+      .filter(Boolean) as Array<{ id: string; name: string; price: number }>;
+
+    const cartItem: CartItem = {
+      id: `mix-pizza-${currentSize.name}-${currentSauce.name}-${Date.now()}`,
+      name: pizza.name,
+      image: pizza.image,
+      basePrice: totalPrice / quantity,
+      size: {
+        name: currentSize.name,
+        price: pizza.basePrice + currentSize.priceModifier,
+      },
+      sauce: currentSauce,
+      extras: selectedExtras,
+      quantity,
+      totalPrice,
+      type: "mix-pizza",
+    };
+
+    dispatch(addToCart(cartItem));
+    onOpenChange(false);
+  };
+
   const extrasLeft = pizza.extras.filter((e) => e.category === "left");
   const extrasRight = pizza.extras.filter((e) => e.category === "right");
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[95vw] md:max-w-md lg:max-w-lg w-full p-0 m-0 max-h-[95vh] flex flex-col bg-transparent border-none shadow-none outline-none ring-0 focus:ring-0">
+      <DialogContent className="w-full p-0 m-0 flex flex-col bg-transparent border-none shadow-none outline-none ring-0 focus:ring-0">
         <DialogHeader className="bg-black text-white p-3 flex flex-row items-center justify-between rounded-t-lg">
           <div className="flex items-center gap-2">
             <Image
@@ -147,127 +182,135 @@ const MixPicaDetailModal: React.FC<MixPicaDetailModalProps> = ({
           </div>
         </DialogHeader>
 
-        <div className="bg-amber-400 p-3 sm:p-4 flex-grow overflow-y-auto space-y-2 sm:space-y-3 rounded-b-lg">
-          <div className="relative">
-            <div className="flex items-start gap-2">
-              <Image
-                src={pizza.image || "/placeholder.svg"}
-                alt={pizza.name}
-                width={120}
-                height={120}
-                className="rounded-md object-contain sm:w-[150px] sm:h-[150px]"
-              />
-              <div className="flex-1 pt-1">
-                <h3 className="text-lg sm:text-xl font-bold text-gray-800">
-                  {pizza.name}
-                </h3>
-                <p className="text-xs sm:text-sm text-gray-600">
-                  {pizza.description}
-                </p>
-                <p className="text-xs sm:text-sm text-gray-600">
-                  {pizza.baseSauce}
-                </p>
+        <ScrollArea className="bg-[#f5a61f] p-3 sm:p-4 flex-grow h-[600px] max-h-[70vh]">
+          <div className="space-y-2 sm:space-y-3">
+            <div className="relative">
+              <div className="flex items-start gap-2">
+                <Image
+                  src={pizza.image || "/placeholder.svg"}
+                  alt={pizza.name}
+                  width={120}
+                  height={120}
+                  className="rounded-md object-contain sm:w-[150px] sm:h-[150px]"
+                />
+                <div className="flex-1 pt-1">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-800">
+                    {pizza.name}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-600">
+                    {pizza.description}
+                  </p>
+                  <p className="text-xs sm:text-sm text-gray-600">
+                    {pizza.baseSauce}
+                  </p>
+                </div>
+              </div>
+              <div className="absolute top-0 right-0 bg-red-600 text-white rounded-full w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center text-sm sm:text-base font-bold p-1 text-center leading-tight shadow-md">
+                {formatPrice(totalPrice)}
               </div>
             </div>
-            <div className="absolute top-0 right-0 bg-red-600 text-white rounded-full w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center text-sm sm:text-base font-bold p-1 text-center leading-tight shadow-md">
-              {formatPrice(totalPrice)}
-            </div>
-          </div>
 
-          <div className="flex justify-center items-center gap-2 sm:gap-3">
-            <div className="flex flex-wrap gap-1 sm:gap-2">
-              {pizza.sizes.map((size) => (
-                <Button
-                  key={size.name}
-                  variant={
-                    currentSize.name === size.name ? "default" : "outline"
-                  }
-                  onClick={() => setCurrentSize(size)}
-                  className={`h-auto py-1 px-2 text-[10px] sm:text-xs rounded-full ${
-                    currentSize.name === size.name
-                      ? "bg-gray-100 text-gray-800 border-none"
-                      : "text-gray-700 border-gray-700 bg-transparent hover:bg-gray-100 hover:text-gray-800"
-                  }`}
-                >
-                  {size.name}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-xs sm:text-sm text-gray-700 mb-1 mt-2 text-center">
-              {t("sauce")}
-            </h4>
-            <div className="flex flex-wrap gap-1 sm:gap-2 justify-center">
-              {pizza.sauces.map((sauce) => (
-                <Button
-                  key={sauce.name}
-                  variant={
-                    currentSauce.name === sauce.name ? "default" : "outline"
-                  }
-                  onClick={() => setCurrentSauce(sauce)}
-                  className={`h-auto py-1 px-2 text-[10px] sm:text-xs rounded-full ${
-                    currentSauce.name === sauce.name
-                      ? "bg-gray-100 text-gray-800 border-none"
-                      : "text-gray-700 border-gray-700 bg-transparent hover:bg-gray-100 hover:text-gray-800"
-                  }`}
-                >
-                  {sauce.name}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-xs sm:text-sm text-gray-700 mb-1 mt-2 text-center">
-              {t("extras")}
-            </h4>
-            <div className="grid grid-cols-2 gap-x-2 gap-y-1">
-              {/* Left Column Extras */}
-              <div className="space-y-1">
-                {extrasLeft.map((extra) => (
+            <div className="flex justify-center items-center gap-2 sm:gap-3">
+              <div className="flex flex-wrap gap-1 sm:gap-2">
+                {pizza.sizes.map((size) => (
                   <Button
-                    key={extra.name}
+                    key={size.name}
                     variant={
-                      currentExtras.includes(extra.name) ? "default" : "outline"
+                      currentSize.name === size.name ? "default" : "outline"
                     }
-                    onClick={() => handleExtraToggle(extra.name)}
-                    className={`w-full h-auto py-1 px-2 text-[10px] sm:text-xs rounded-full justify-start truncate ${
-                      currentExtras.includes(extra.name)
+                    onClick={() => setCurrentSize(size)}
+                    className={`h-auto py-1 px-2 text-[10px] sm:text-xs rounded-full ${
+                      currentSize.name === size.name
                         ? "bg-gray-100 text-gray-800 border-none"
                         : "text-gray-700 border-gray-700 bg-transparent hover:bg-gray-100 hover:text-gray-800"
                     }`}
                   >
-                    {extra.name}
-                  </Button>
-                ))}
-              </div>
-              {/* Right Column Extras */}
-              <div className="space-y-1">
-                {extrasRight.map((extra) => (
-                  <Button
-                    key={extra.name}
-                    variant={
-                      currentExtras.includes(extra.name) ? "default" : "outline"
-                    }
-                    onClick={() => handleExtraToggle(extra.name)}
-                    className={`w-full h-auto py-1 px-2 text-[10px] sm:text-xs rounded-full justify-start truncate ${
-                      currentExtras.includes(extra.name)
-                        ? "bg-gray-100 text-gray-800 border-none"
-                        : "text-gray-700 border-gray-700 bg-transparent hover:bg-gray-100 hover:text-gray-800"
-                    }`}
-                  >
-                    {extra.name}
+                    {size.name}
                   </Button>
                 ))}
               </div>
             </div>
-            <p className="text-[10px] text-gray-500 mt-1 text-center">
-              {t("selectUpTo5Ingredients")}
-            </p>
+
+            <div>
+              <h4 className="font-semibold text-xs sm:text-sm text-gray-700 mb-1 mt-2 text-center">
+                {t("sauce")}
+              </h4>
+              <div className="flex flex-wrap gap-1 sm:gap-2 justify-center">
+                {pizza.sauces.map((sauce) => (
+                  <Button
+                    key={sauce.name}
+                    variant={
+                      currentSauce.name === sauce.name ? "default" : "outline"
+                    }
+                    onClick={() => setCurrentSauce(sauce)}
+                    className={`h-auto py-1 px-2 text-[10px] sm:text-xs rounded-full ${
+                      currentSauce.name === sauce.name
+                        ? "bg-gray-100 text-gray-800 border-none"
+                        : "text-gray-700 border-gray-700 bg-transparent hover:bg-gray-100 hover:text-gray-800"
+                    }`}
+                  >
+                    {sauce.name}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-xs sm:text-sm text-gray-700 mb-1 mt-2 text-center">
+                {t("extras")}
+              </h4>
+              <div className="grid grid-cols-2 gap-x-2 gap-y-1">
+                {/* Left Column Extras */}
+                <div className="space-y-1">
+                  {extrasLeft.map((extra) => (
+                    <Button
+                      key={extra.name}
+                      variant={
+                        currentExtras.includes(extra.name)
+                          ? "default"
+                          : "outline"
+                      }
+                      onClick={() => handleExtraToggle(extra.name)}
+                      className={`w-full h-auto py-1 px-2 text-[10px] sm:text-xs rounded-full justify-start truncate ${
+                        currentExtras.includes(extra.name)
+                          ? "bg-gray-100 text-gray-800 border-none"
+                          : "text-gray-700 border-gray-700 bg-transparent hover:bg-gray-100 hover:text-gray-800"
+                      }`}
+                    >
+                      {extra.name}
+                    </Button>
+                  ))}
+                </div>
+                {/* Right Column Extras */}
+                <div className="space-y-1">
+                  {extrasRight.map((extra) => (
+                    <Button
+                      key={extra.name}
+                      variant={
+                        currentExtras.includes(extra.name)
+                          ? "default"
+                          : "outline"
+                      }
+                      onClick={() => handleExtraToggle(extra.name)}
+                      className={`w-full h-auto py-1 px-2 text-[10px] sm:text-xs rounded-full justify-start truncate ${
+                        currentExtras.includes(extra.name)
+                          ? "bg-gray-100 text-gray-800 border-none"
+                          : "text-gray-700 border-gray-700 bg-transparent hover:bg-gray-100 hover:text-gray-800"
+                      }`}
+                    >
+                      {extra.name}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+              <p className="text-[10px] text-gray-500 mt-1 text-center">
+                {t("selectUpTo5Ingredients")}
+              </p>
+            </div>
           </div>
-        </div>
+          <ScrollBar orientation="vertical" />
+        </ScrollArea>
+
         <DialogFooter className="bg-gray-100 p-2 sm:p-3 border-t flex flex-row items-center justify-between gap-2 sm:gap-3 rounded-b-lg">
           <div className="flex items-center gap-1 sm:gap-2">
             <Button
@@ -293,6 +336,7 @@ const MixPicaDetailModal: React.FC<MixPicaDetailModalProps> = ({
           <Button
             size="lg"
             className="flex-grow sm:flex-grow-0 bg-red-600 hover:bg-red-700 text-white text-sm sm:text-base py-2"
+            onClick={handleAddToCart}
           >
             <ShoppingCart className="w-4 h-4 sm:w-5 mr-1 sm:mr-2" />
             {t("addToCart")}
