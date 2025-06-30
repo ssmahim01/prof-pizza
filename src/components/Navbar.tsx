@@ -71,9 +71,9 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled = false }) => {
                     variant="ghost"
                     size="icon"
                     onClick={() => setIsOpen(true)}
-                    className="fixed top-52 bg-black text-white rounded-full p-3 text-sm font-medium hover:bg-gray-800 hover:text-white/90 hover:transform hover:scale-95 transition-all duration-300 w-20 h-20"
+                    className="fixed top-52 lg:right-10 md:right-2 right-4 bg-black text-white rounded-full p-3 text-lg font-medium hover:bg-gray-800 hover:text-white/90 hover:transform hover:scale-95 transition-all duration-300 w-20 h-20"
                   >
-                    <span>{t("menu")}</span>
+                    <span className="hover:animate-spin">{t("menu")}</span>
                   </Button>
                 </div>
               </div>
@@ -103,7 +103,7 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled = false }) => {
                   />
                 </Link>
               </div>
-              <div className="flex items-center h-full w-16">
+              <div className="flex items-center h-full w-16 mr-5">
                 <Button
                   variant="ghost"
                   size="icon"

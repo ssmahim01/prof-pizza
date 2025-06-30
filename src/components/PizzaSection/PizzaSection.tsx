@@ -21,7 +21,8 @@ const PizzaSection: React.FC = () => {
       itemNumberForModal: 1,
       name: "Pizza Classica",
       img: "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274877/Pizza-1_ta0fcd.webp",
-      modalImage: "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274877/Pizza-1_ta0fcd.webp",
+      modalImage:
+        "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274877/Pizza-1_ta0fcd.webp",
       desc:
         t("cookedHam") +
         ", " +
@@ -240,7 +241,8 @@ const PizzaSection: React.FC = () => {
       itemNumberForModal: 2,
       name: "Pizza Mediterranea",
       img: "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274839/Pizza-2_xfwimr.webp",
-      modalImage: "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274839/Pizza-2_xfwimr.webp",
+      modalImage:
+        "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274839/Pizza-2_xfwimr.webp",
       desc:
         t("blueOnions") +
         ", " +
@@ -300,7 +302,8 @@ const PizzaSection: React.FC = () => {
       itemNumberForModal: 3,
       name: "Pizza Rustica",
       img: "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274839/Pizza-3_ebnwws.webp",
-      modalImage: "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274839/Pizza-3_ebnwws.webp",
+      modalImage:
+        "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274839/Pizza-3_ebnwws.webp",
       desc:
         t("mushrooms") +
         ", " +
@@ -419,15 +422,13 @@ const PizzaSection: React.FC = () => {
                 onClick={() => handleItemClick(item.modalDataId)}
               >
                 <div
-                  className={`w-full flex items-center gap-2 sm:gap-4 p-2 sm:p-3 rounded-md hover:bg-black/5 cursor-pointer
-                                 ${
-                                   index % 2 !== 0
-                                     ? "flex-row-reverse md:flex-row-reverse"
-                                     : "flex-row md:flex-row"
-                                 } 
-                                 md:justify-start md:pl-${
-                                   index % 2 !== 0 ? "0" : "12"
-                                 } lg:pl-${index % 2 !== 0 ? "0" : "44"}`}
+                  className={`w-full flex items-center gap-2 sm:gap-4 p-2 sm:p-3 rounded-md cursor-pointer ${
+                    index % 2 !== 0
+                      ? "flex-row-reverse md:flex-row-reverse"
+                      : "flex-row md:flex-row"
+                  }  md:justify-start md:pl-${
+                    index % 2 !== 0 ? "0" : "12"
+                  } lg:pl-${index % 2 !== 0 ? "0" : "44"}`}
                 >
                   <div className="flex flex-col items-center gap-y-2 sm:gap-y-3 flex-shrink-0">
                     <Image
