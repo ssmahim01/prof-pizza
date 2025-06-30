@@ -1,12 +1,14 @@
-"use client"
-import React from "react"
-import { motion } from "framer-motion"
-import Image from "next/image"
-import { Dialog, DialogTrigger } from "@/components/ui/dialog"
-import MixPicaDetailModal from "../MixPicaDetailModal/MixPicaDetailModal"
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import MixPicaDetailModal from "../MixPicaDetailModal/MixPicaDetailModal";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ItemSection: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
+  const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false);
+  const { t } = useLanguage();
 
   return (
     <>
@@ -32,19 +34,22 @@ const ItemSection: React.FC = () => {
               </div>
               <div className="flex flex-col items-center md:items-start text-center md:text-left">
                 <span className="text-3xl md:text-4xl font-semibold text-gray-800 group-hover:text-gray-900 transition-colors">
-                  MIX <br className="md:hidden" /> pica
+                  {t("mixPizza")}
                 </span>
                 <span className="text-lg md:text-xl font-medium text-gray-700 group-hover:text-gray-800 transition-colors">
-                  Susikurk <br className="md:hidden" /> skaniausią
+                  {t("createTastiest")}
                 </span>
               </div>
             </div>
           </DialogTrigger>
         </Dialog>
-        <MixPicaDetailModal isOpen={isModalOpen} onOpenChange={setIsModalOpen} />
+        <MixPicaDetailModal
+          isOpen={isModalOpen}
+          onOpenChange={setIsModalOpen}
+        />
       </motion.div>
     </>
-  )
-}
+  );
+};
 
-export default ItemSection
+export default ItemSection;

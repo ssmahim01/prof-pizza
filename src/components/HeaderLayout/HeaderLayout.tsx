@@ -6,10 +6,9 @@ import Footer from "../Footer";
 
 interface HeaderLayoutProps {
   children: React.ReactNode;
-  locale: string;
 }
 
-const HeaderLayout: React.FC<HeaderLayoutProps> = ({ children, locale }) => {
+const HeaderLayout: React.FC<HeaderLayoutProps> = ({ children }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -22,9 +21,9 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ children, locale }) => {
 
   return (
     <>
-      <Navbar locale={locale} isScrolled={isScrolled} />
+      <Navbar isScrolled={isScrolled} />
       <main className={`${isScrolled ? "" : "mt-[370px]"}`}>{children}</main>
-      <Footer locale={locale} />
+      <Footer />
     </>
   );
 };

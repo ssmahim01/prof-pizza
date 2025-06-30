@@ -1,42 +1,33 @@
-"use client"
+"use client";
 
-import { usePathname, useRouter } from "next/navigation"
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface LanguageSwitcherProps {
-  currentLocale: string
-  className?: string
+  className?: string;
 }
 
-export default function LanguageSwitcher({ currentLocale, className }: LanguageSwitcherProps) {
-  const pathname = usePathname()
-  const router = useRouter()
-
-  const switchLanguage = (newLocale: string) => {
-    if (!pathname) return
-
-    // Remove the current locale from the pathname
-    const segments = pathname.split("/")
-    segments[1] = newLocale
-
-    const newPath = segments.join("/")
-    router.push(newPath)
-  }
+export default function LanguageSwitcher({ className }: LanguageSwitcherProps) {
+  const { language, setLanguage } = useLanguage();
 
   return (
     <div className={className}>
       <span
-        onClick={() => switchLanguage("lt")}
-        className={`cursor-pointer ${currentLocale === "lt" ? "text-purple-400" : "hover:text-gray-300"}`}
+        onClick={() => setLanguage("lt")}
+        className={`cursor-pointer ${
+          language === "lt" ? "text-purple-400" : "hover:text-gray-300"
+        }`}
       >
         LT
       </span>{" "}
       |{" "}
       <span
-        onClick={() => switchLanguage("en")}
-        className={`cursor-pointer ${currentLocale === "en" ? "text-purple-400" : "hover:text-gray-300"}`}
+        onClick={() => setLanguage("en")}
+        className={`cursor-pointer ${
+          language === "en" ? "text-purple-400" : "hover:text-gray-300"
+        }`}
       >
         EN
       </span>
     </div>
-  )
+  );
 }

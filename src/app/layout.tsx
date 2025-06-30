@@ -3,6 +3,7 @@ import "./globals.css"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import HeaderLayout from "@/components/HeaderLayout/HeaderLayout"
+import { LanguageProvider } from "@/contexts/LanguageContext"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -11,21 +12,17 @@ export const metadata: Metadata = {
   description: "Prof Pizza and Kebab Prime",
 }
 
-export async function generateStaticParams() {
-  return [{ locale: "en" }, { locale: "lt" }]
-}
-
 export default function RootLayout({
   children,
-  params: { locale },
 }: {
   children: React.ReactNode
-  params: { locale: string }
 }) {
   return (
-    <html lang={locale}>
+    <html lang="en">
       <body className={inter.className}>
-        <HeaderLayout locale={locale}>{children}</HeaderLayout>
+        <LanguageProvider>
+          <HeaderLayout>{children}</HeaderLayout>
+        </LanguageProvider>
       </body>
     </html>
   )
