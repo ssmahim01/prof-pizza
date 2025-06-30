@@ -1,29 +1,33 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, ShoppingCart } from "lucide-react";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-
-// Menu items
-const menuItems = [
-  { name: "Picos", href: "/picos" },
-  { name: "Pita-Gyros", href: "/pita-gyros" },
-  { name: "Kebabai", href: "/kebabai" },
-  { name: "Užkandžiai", href: "/uzkandziai" },
-  { name: "Gėrimai", href: "/gerimai" },
-  { name: "Kava", href: "/kava" },
-  { name: "Ledai", href: "/ledai" },
-];
+import * as React from "react"
+import Link from "next/link"
+import { motion, AnimatePresence } from "framer-motion"
+import { X, ShoppingCart } from "lucide-react"
+import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import LanguageSwitcher from "./LanguageSwitcher"
 
 interface NavbarProps {
-  isScrolled: boolean;
+  isScrolled?: boolean
+  locale: string
 }
 
-const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+// We'll get translations from the parent component or use a hook
+const getMenuItems = (locale: string) => [
+  { name: locale === "lt" ? "Picos" : "Pizzas", href: `/${locale}/picos` },
+  { name: "Pita-Gyros", href: `/${locale}/pita-gyros` },
+  { name: locale === "lt" ? "Kebabai" : "Kebabs", href: `/${locale}/kebabai` },
+  { name: locale === "lt" ? "Užkandžiai" : "Snacks", href: `/${locale}/uzkandziai` },
+  { name: locale === "lt" ? "Gėrimai" : "Drinks", href: `/${locale}/gerimai` },
+  { name: locale === "lt" ? "Kava" : "Coffee", href: `/${locale}/kava` },
+  { name: locale === "lt" ? "Ledai" : "Ice Cream", href: `/${locale}/ledai` },
+]
+
+const Navbar: React.FC<NavbarProps> = ({ isScrolled = false, locale }) => {
+  const [isOpen, setIsOpen] = React.useState(false)
+  const menuItems = getMenuItems(locale)
+  const menuText = locale === "lt" ? "meniu" : "menu"
 
   return (
     <>
@@ -33,19 +37,12 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
         animate={{ height: isScrolled ? 80 : 450 }}
         transition={{ type: "spring", stiffness: 120, damping: 20 }}
       >
-        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between h-full">
+        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex flex-row-reverse items-center justify-between h-full">
           {/* === Content when scrolled === */}
           {isScrolled ? (
             <>
-              <Link href="/">
-                <Image
-                  width={60}
-                  height={60}
-                  priority
-                  quality={100}
-                  src="/Logo-ProfPizza.png"
-                  alt="Prof Pizza Logo"
-                />
+              <Link href={`/${locale}`}>
+                <Image width={60} height={60} priority quality={100} src="/Logo-ProfPizza.png" alt="Prof Pizza Logo" />
               </Link>
               <div className="flex-1 flex items-center justify-center">
                 <Image
@@ -68,7 +65,7 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
                     onClick={() => setIsOpen(true)}
                     className="fixed top-52 bg-black text-white rounded-full p-5 text-lg font-medium hover:bg-gray-800 hover:text-white/90 hover:transform hover:scale-95 hover:animate-spin transition-all duration-300 w-20 h-20"
                   >
-                    <span className="hover:animate-spin">meniu</span>
+                    <span className="hover:animate-spin">{menuText}</span>
                   </Button>
                 </div>
               </div>
@@ -76,8 +73,8 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
           ) : (
             <>
               {/* === Content before scroll === */}
-              <div className="flex-1 flex items-center justify-center space-x-12">
-                <Link href="/">
+              <div className="flex-1 flex items-center justify-center gap-12">
+                <Link href={`/${locale}`}>
                   <Image
                     width={100}
                     height={100}
@@ -87,7 +84,7 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
                     alt="Prof Pizza Logo"
                   />
                 </Link>
-                <Link href="/">
+                <Link href={`/${locale}`}>
                   <Image
                     width={100}
                     height={100}
@@ -105,7 +102,7 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
                   onClick={() => setIsOpen(true)}
                   className="bg-black text-white rounded-full p-5 text-lg font-medium hover:bg-gray-800 hover:text-white/90 hover:transform hover:scale-95 hover:animate-spin transition-all duration-300 w-20 h-20"
                 >
-                  <span className="hover:animate-spin">meniu</span>
+                  <span className="hover:animate-spin">{menuText}</span>
                 </Button>
               </div>
             </>
@@ -123,33 +120,18 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
             transition={{ duration: 0.7, ease: "easeInOut" }}
             className="fixed inset-0 z-50 bg-black flex flex-col"
           >
-            <p
-              onClick={() => setIsOpen(false)}
-              className="absolute right-2 top-2 cursor-pointer"
-            >
+            <p onClick={() => setIsOpen(false)} className="absolute right-2 top-2 cursor-pointer">
               <X className="text-white w-7 h-7 font-bold" />
             </p>
 
             {/* Header with Logos and Close Button */}
             <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-center mt-8 -mb-8">
               <div className="flex justify-center items-center space-x-4">
-                <Link href="/">
-                  <Image
-                    width={90}
-                    height={90}
-                    priority
-                    src="/Logo-ProfPizza.png"
-                    alt="Prof Pizza Logo"
-                  />
+                <Link href={`/${locale}`}>
+                  <Image width={90} height={90} priority src="/Logo-ProfPizza.png" alt="Prof Pizza Logo" />
                 </Link>
-                <Link href="/">
-                  <Image
-                    width={90}
-                    height={90}
-                    priority
-                    src="/Logo-KebabPrime.png"
-                    alt="Kebab Prime Logo"
-                  />
+                <Link href={`/${locale}`}>
+                  <Image width={90} height={90} priority src="/Logo-KebabPrime.png" alt="Kebab Prime Logo" />
                 </Link>
               </div>
             </div>
@@ -169,18 +151,12 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
             </div>
 
             {/* Language Options */}
-            <div className="mb-28 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-              <div className="text-white text-2xl">
-                <span className="hover:text-gray-300 cursor-pointer">LT</span>
-                {" | "}
-                <span className="hover:text-gray-300 cursor-pointer">EN</span>
-              </div>
-            </div>
+            <LanguageSwitcher currentLocale={locale} className="text-white text-2xl text-center mb-12" />
           </motion.div>
         )}
       </AnimatePresence>
     </>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
