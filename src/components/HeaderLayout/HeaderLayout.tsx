@@ -24,7 +24,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ children, locale }) => {
     <>
       <Navbar locale={locale} isScrolled={isScrolled} />
       <main className={`${isScrolled ? "" : "mt-[370px]"}`}>{children}</main>
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 };

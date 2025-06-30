@@ -1,9 +1,14 @@
-"use client"
+"use client";
 
-import type React from "react"
-import Image from "next/image"
+import type React from "react";
+import Image from "next/image";
+import LanguageSwitcher from "./LanguageSwitcher";
 
-const Footer: React.FC = () => {
+interface FooterProp {
+  locale: string;
+}
+
+const Footer: React.FC<FooterProp> = ({ locale }) => {
   return (
     <footer className="w-full bg-black text-white/90 pt-8 md:pt-10 pb-12 md:pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center space-y-6 md:space-y-0 md:flex-row md:justify-between md:items-start">
@@ -34,11 +39,11 @@ const Footer: React.FC = () => {
               className="object-contain sm:w-[70px] sm:h-[70px]"
             />
           </div>
-          <div className="text-white text-base sm:text-lg">
-            <span className="hover:text-gray-300 cursor-pointer">LT</span>
-            {" | "}
-            <span className="hover:text-gray-300 cursor-pointer">EN</span>
-          </div>
+          {/* Language Options */}
+          <LanguageSwitcher
+            currentLocale={locale}
+            className="text-white text-2xl text-center mb-12"
+          />
         </div>
         <div className="text-center md:text-right">
           <p className="flex flex-col text-sm sm:text-base gap-y-1 font-semibold">
@@ -49,7 +54,7 @@ const Footer: React.FC = () => {
         </div>
       </div>
     </footer>
-  )
-}
+  );
+};
 
 export default Footer;
