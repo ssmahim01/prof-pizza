@@ -11,6 +11,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { ShoppingCart, Plus, Minus } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface MixPicaData {
   name: string;
@@ -23,56 +24,6 @@ interface MixPicaData {
   extras: { name: string; price: number; category?: "left" | "right" }[];
 }
 
-// Static data for MIX Pica based on the image
-const mixPicaDetails: MixPicaData = {
-  name: "MIX pica",
-  image: "/pizza-image.png",
-  description: "5 ingredientai (2+3)",
-  baseSauce: "Pomidorų padažas ®",
-  basePrice: 12.99,
-  sizes: [
-    { name: "Snack", priceModifier: -2.0, diameter: "20cm" },
-    { name: "30 cm", priceModifier: 0, diameter: "30cm" },
-    { name: "40 cm", priceModifier: 2.5, diameter: "40cm" },
-  ],
-  sauces: [
-    { name: "Česnakinis", price: 0 },
-    { name: "Pikantiškas", price: 0.65 },
-    { name: "Aštrus", price: 1.25 },
-    { name: "BBQ", price: 0.65 },
-    { name: "Ketčupas", price: 0.65 },
-  ],
-  extras: [
-    // Left column from image
-    { name: "Mozzarella sūris", price: 1.0, category: "left" },
-    { name: "Virtas kumpis", price: 1.0, category: "left" },
-    { name: "Salamis", price: 1.0, category: "left" },
-    { name: "Šoninė", price: 1.0, category: "left" },
-    { name: "Malta mėsa", price: 1.5, category: "left" },
-    { name: "Jautienos kumpeliai", price: 1.5, category: "left" },
-    { name: "Vištiena", price: 1.5, category: "left" },
-    { name: "Krevetės", price: 2.0, category: "left" },
-    // Right column from image
-    { name: "Pievagrybiai", price: 0.8, category: "right" },
-    { name: "Paprika", price: 0.8, category: "right" },
-    { name: "Porai", price: 0.8, category: "right" },
-    { name: "Pomidorai vyšniniai", price: 1.0, category: "right" },
-    { name: "Baklažanai", price: 1.0, category: "right" },
-    { name: "Svogūnai mėlynieji", price: 0.8, category: "right" },
-    { name: "Ananasai", price: 1.0, category: "right" },
-    { name: "Alyvuogės", price: 0.8, category: "right" },
-    { name: "Agurkai", price: 0.8, category: "right" },
-    { name: "Svogūnėliai", price: 0.8, category: "right" },
-    { name: "Džiovinti pomidorai", price: 1.2, category: "right" },
-    { name: "Brokoliai", price: 1.0, category: "right" },
-    { name: "Jalapenai", price: 1.0, category: "right" },
-    { name: "Bazilikas", price: 0.5, category: "right" },
-    { name: "Špinatai", price: 0.8, category: "right" },
-    { name: "Rukola", price: 0.8, category: "right" },
-    { name: "Rūkytas sūris", price: 1.2, category: "right" },
-  ],
-};
-
 interface MixPicaDetailModalProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
@@ -82,12 +33,64 @@ const MixPicaDetailModal: React.FC<MixPicaDetailModalProps> = ({
   isOpen,
   onOpenChange,
 }) => {
+  const { t } = useLanguage();
+
+  // Static data for MIX Pica with translations
+  const mixPicaDetails: MixPicaData = {
+    name: t("mixPizza"),
+    image: "/pizza-image.png",
+    description: `5 ${t("ingredients")} (2+3)`,
+    baseSauce: t("tomatoSauce") + " ®",
+    basePrice: 12.99,
+    sizes: [
+      { name: "Snack", priceModifier: -2.0, diameter: "20cm" },
+      { name: "30 cm", priceModifier: 0, diameter: "30cm" },
+      { name: "40 cm", priceModifier: 2.5, diameter: "40cm" },
+    ],
+    sauces: [
+      { name: t("garlicSauce"), price: 0 },
+      { name: t("spicySauce"), price: 0.65 },
+      { name: t("hotSauce"), price: 1.25 },
+      { name: t("bbqSauce"), price: 0.65 },
+      { name: t("ketchupSauce"), price: 0.65 },
+    ],
+    extras: [
+      // Left column from image
+      { name: t("mozzarellaCheese"), price: 1.0, category: "left" },
+      { name: t("cookedHam"), price: 1.0, category: "left" },
+      { name: t("salamis"), price: 1.0, category: "left" },
+      { name: t("bacon"), price: 1.0, category: "left" },
+      { name: t("groundMeat"), price: 1.5, category: "left" },
+      { name: t("beefChips"), price: 1.5, category: "left" },
+      { name: t("chicken"), price: 1.5, category: "left" },
+      { name: t("shrimp"), price: 2.0, category: "left" },
+      // Right column from image
+      { name: t("mushrooms"), price: 0.8, category: "right" },
+      { name: t("paprika"), price: 0.8, category: "right" },
+      { name: t("leeks"), price: 0.8, category: "right" },
+      { name: t("cherryTomatoes"), price: 1.0, category: "right" },
+      { name: t("eggplant"), price: 1.0, category: "right" },
+      { name: t("blueOnions"), price: 0.8, category: "right" },
+      { name: t("pineapple"), price: 1.0, category: "right" },
+      { name: t("olives"), price: 0.8, category: "right" },
+      { name: t("cucumbers"), price: 0.8, category: "right" },
+      { name: t("scallions"), price: 0.8, category: "right" },
+      { name: t("driedTomatoes"), price: 1.2, category: "right" },
+      { name: t("broccoli"), price: 1.0, category: "right" },
+      { name: t("jalapenos"), price: 1.0, category: "right" },
+      { name: t("basil"), price: 0.5, category: "right" },
+      { name: t("spinach"), price: 0.8, category: "right" },
+      { name: t("arugula"), price: 0.8, category: "right" },
+      { name: t("smokedCheese"), price: 1.2, category: "right" },
+    ],
+  };
+
   const pizza = mixPicaDetails;
   const [currentSize, setCurrentSize] = useState(
     pizza.sizes.find((s) => s.diameter === "30cm") || pizza.sizes[0]
   );
   const [currentSauce, setCurrentSauce] = useState(
-    pizza.sauces.find((s) => s.name === "Česnakinis") || pizza.sauces[0]
+    pizza.sauces.find((s) => s.name === t("garlicSauce")) || pizza.sauces[0]
   );
   const [currentExtras, setCurrentExtras] = useState<string[]>([]);
   const [quantity, setQuantity] = useState(1);
@@ -95,8 +98,7 @@ const MixPicaDetailModal: React.FC<MixPicaDetailModalProps> = ({
 
   useEffect(() => {
     let price = pizza.basePrice + currentSize.priceModifier;
-    if (currentSauce.name !== "Česnakinis") {
-      // Assuming Česnakinis is default and its price is for others
+    if (currentSauce.name !== t("garlicSauce")) {
       price += currentSauce.price;
     }
 
@@ -114,7 +116,7 @@ const MixPicaDetailModal: React.FC<MixPicaDetailModalProps> = ({
       }
     });
     setTotalPrice(price * quantity);
-  }, [currentSize, currentSauce, currentExtras, quantity, pizza]);
+  }, [currentSize, currentSauce, currentExtras, quantity, pizza, t]);
 
   const formatPrice = (price: number) => price.toFixed(2) + " €";
 
@@ -194,7 +196,7 @@ const MixPicaDetailModal: React.FC<MixPicaDetailModalProps> = ({
 
           <div>
             <h4 className="font-semibold text-xs sm:text-sm text-gray-700 mb-1 mt-2 text-center">
-              Padažas
+              {t("sauce")}
             </h4>
             <div className="flex flex-wrap gap-1 sm:gap-2 justify-center">
               {pizza.sauces.map((sauce) => (
@@ -218,7 +220,7 @@ const MixPicaDetailModal: React.FC<MixPicaDetailModalProps> = ({
 
           <div>
             <h4 className="font-semibold text-xs sm:text-sm text-gray-700 mb-1 mt-2 text-center">
-              Priedai
+              {t("extras")}
             </h4>
             <div className="grid grid-cols-2 gap-x-2 gap-y-1">
               {/* Left Column Extras */}
@@ -233,7 +235,7 @@ const MixPicaDetailModal: React.FC<MixPicaDetailModalProps> = ({
                     className={`w-full h-auto py-1 px-2 text-[10px] sm:text-xs rounded-full justify-start truncate ${
                       currentExtras.includes(extra.name)
                         ? "bg-gray-100 text-gray-800 border-none"
-                      : "text-gray-700 border-gray-700 bg-transparent hover:bg-gray-100 hover:text-gray-800"
+                        : "text-gray-700 border-gray-700 bg-transparent hover:bg-gray-100 hover:text-gray-800"
                     }`}
                   >
                     {extra.name}
@@ -251,8 +253,8 @@ const MixPicaDetailModal: React.FC<MixPicaDetailModalProps> = ({
                     onClick={() => handleExtraToggle(extra.name)}
                     className={`w-full h-auto py-1 px-2 text-[10px] sm:text-xs rounded-full justify-start truncate ${
                       currentExtras.includes(extra.name)
-                      ? "bg-gray-100 text-gray-800 border-none"
-                      : "text-gray-700 border-gray-700 bg-transparent hover:bg-gray-100 hover:text-gray-800"
+                        ? "bg-gray-100 text-gray-800 border-none"
+                        : "text-gray-700 border-gray-700 bg-transparent hover:bg-gray-100 hover:text-gray-800"
                     }`}
                   >
                     {extra.name}
@@ -261,7 +263,7 @@ const MixPicaDetailModal: React.FC<MixPicaDetailModalProps> = ({
               </div>
             </div>
             <p className="text-[10px] text-gray-500 mt-1 text-center">
-              Pasirinkite iki 5 ingredientų (2 nemokami)
+              {t("selectUpTo5Ingredients")}
             </p>
           </div>
         </div>
@@ -273,8 +275,7 @@ const MixPicaDetailModal: React.FC<MixPicaDetailModalProps> = ({
               onClick={() => setQuantity((q) => Math.max(1, q - 1))}
               className="border-gray-300 text-gray-700 hover:bg-gray-200 w-7 h-7 sm:w-8 sm:h-8"
             >
-              {" "}
-              <Minus className="w-3 h-3 sm:w-4 sm:h-4" />{" "}
+              <Minus className="w-3 h-3 sm:w-4 sm:h-4" />
             </Button>
             <span className="text-base sm:text-lg font-bold w-6 sm:w-8 text-center text-gray-700">
               {quantity}
@@ -285,15 +286,15 @@ const MixPicaDetailModal: React.FC<MixPicaDetailModalProps> = ({
               onClick={() => setQuantity((q) => q + 1)}
               className="border-gray-300 text-gray-700 hover:bg-gray-200 w-7 h-7 sm:w-8 sm:h-8"
             >
-              {" "}
-              <Plus className="w-3 h-3 sm:w-4 sm:h-4" />{" "}
+              <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
             </Button>
           </div>
           <Button
             size="lg"
             className="flex-grow sm:flex-grow-0 bg-red-600 hover:bg-red-700 text-white text-sm sm:text-base py-2"
           >
-            <ShoppingCart className="w-4 h-4 sm:w-5 mr-1 sm:mr-2" />Į krepšelį
+            <ShoppingCart className="w-4 h-4 sm:w-5 mr-1 sm:mr-2" />
+            {t("addToCart")}
           </Button>
         </DialogFooter>
       </DialogContent>

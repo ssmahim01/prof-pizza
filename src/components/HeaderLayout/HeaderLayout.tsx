@@ -1,31 +1,10 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-import Navbar from "../Navbar";
-import Footer from "../Footer";
+import type { ReactNode } from "react"
+import NavbarLayout from "@/components/shared/NavbarLayout"
 
 interface HeaderLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode
 }
 
-const HeaderLayout: React.FC<HeaderLayoutProps> = ({ children }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  return (
-    <>
-      <Navbar isScrolled={isScrolled} />
-      <main className={`${isScrolled ? "" : "mt-[370px]"}`}>{children}</main>
-      <Footer />
-    </>
-  );
-};
-
-export default HeaderLayout;
+export default function HeaderLayout({ children }: HeaderLayoutProps) {
+  return <NavbarLayout>{children}</NavbarLayout>
+}

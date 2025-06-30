@@ -36,7 +36,7 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled = false }) => {
         animate={{ height: isScrolled ? 80 : 450 }}
         transition={{ type: "spring", stiffness: 120, damping: 20 }}
       >
-        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex flex-row-reverse items-center justify-between h-full">
+        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex flex-row items-center justify-between h-full">
           {/* === Content when scrolled === */}
           {isScrolled ? (
             <>
@@ -64,14 +64,14 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled = false }) => {
                   <ShoppingCart className="h-5 w-5 mr-1" />
                   <span>0.00 $</span>
                 </div>
-                <div className="flex items-center h-16 w-16">
+                <div className="flex items-center">
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => setIsOpen(true)}
-                    className="fixed top-52 bg-black text-white rounded-full p-5 text-lg font-medium hover:bg-gray-800 hover:text-white/90 hover:transform hover:scale-95 hover:animate-spin transition-all duration-300 w-20 h-20"
+                    className="fixed top-52 bg-black text-white rounded-full p-3 text-sm font-medium hover:bg-gray-800 hover:text-white/90 hover:transform hover:scale-95 transition-all duration-300 w-20 h-20"
                   >
-                    <span className="hover:animate-spin">{t("menu")}</span>
+                    <span>{t("menu")}</span>
                   </Button>
                 </div>
               </div>
