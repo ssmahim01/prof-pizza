@@ -46,13 +46,15 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled = false }) => {
                   height={60}
                   priority
                   quality={100}
-                  src="/Logo-ProfPizza.png"
+                  src="https://res.cloudinary.com/daspo1tk3/image/upload/v1751274816/Logo-ProfPizza_d72bmu.png"
                   alt="Prof Pizza Logo"
                 />
               </Link>
               <div className="flex-1 flex items-center justify-center">
                 <Image
-                  src={"/Banner-LT-1024x171.png"}
+                  src={
+                    "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274871/Banner-LT-1024x171_1_kfzodm.png"
+                  }
                   width={200}
                   height={40}
                   alt="Banner LT"
@@ -86,7 +88,7 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled = false }) => {
                     height={100}
                     priority
                     quality={100}
-                    src="/Logo-ProfPizza.png"
+                    src="https://res.cloudinary.com/daspo1tk3/image/upload/v1751274816/Logo-ProfPizza_d72bmu.png"
                     alt="Prof Pizza Logo"
                   />
                 </Link>
@@ -96,7 +98,7 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled = false }) => {
                     height={100}
                     priority
                     quality={100}
-                    src="/Logo-KebabPrime.png"
+                    src="https://res.cloudinary.com/daspo1tk3/image/upload/v1751274803/Logo-KebabPrime_w7ie8q.png"
                     alt="Kebab Prime Logo"
                   />
                 </Link>
@@ -141,7 +143,7 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled = false }) => {
                     width={90}
                     height={90}
                     priority
-                    src="/Logo-ProfPizza.png"
+                    src="https://res.cloudinary.com/daspo1tk3/image/upload/v1751274816/Logo-ProfPizza_d72bmu.png"
                     alt="Prof Pizza Logo"
                   />
                 </Link>
@@ -150,7 +152,7 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled = false }) => {
                     width={90}
                     height={90}
                     priority
-                    src="/Logo-KebabPrime.png"
+                    src="https://res.cloudinary.com/daspo1tk3/image/upload/v1751274803/Logo-KebabPrime_w7ie8q.png"
                     alt="Kebab Prime Logo"
                   />
                 </Link>

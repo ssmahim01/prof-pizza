@@ -27,7 +27,7 @@ const ItemSection: React.FC = () => {
                   height={250}
                   priority
                   quality={100}
-                  src="/pizza-image.png"
+                  src="https://res.cloudinary.com/daspo1tk3/image/upload/v1751274840/pizza-image_a6vcm1.png"
                   alt="Mix Pizza"
                   className="object-contain group-hover:scale-105 transition-transform duration-300"
                 />

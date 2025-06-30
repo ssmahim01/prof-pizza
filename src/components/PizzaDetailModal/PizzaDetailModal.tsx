@@ -119,7 +119,7 @@ const PizzaDetailModal: React.FC<PizzaDetailModalProps> = ({
       <DialogContent className="sm:max-w-[95vw] md:max-w-md lg:max-w-lg w-full p-0 m-0 max-h-[95vh] flex flex-col bg-transparent border-none shadow-none outline-none ring-0 focus:ring-0">
         <DialogHeader className="bg-black text-white p-2 flex flex-row items-center justify-between rounded-t-lg">
           <Image
-            src="/Logo-ProfPizza.png"
+            src="https://res.cloudinary.com/daspo1tk3/image/upload/v1751274816/Logo-ProfPizza_d72bmu.png"
             alt="Prof Pizza"
             width={28}
             height={28}

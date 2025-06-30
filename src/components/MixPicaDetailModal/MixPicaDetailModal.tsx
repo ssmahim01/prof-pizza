@@ -38,7 +38,8 @@ const MixPicaDetailModal: React.FC<MixPicaDetailModalProps> = ({
   // Static data for MIX Pica with translations
   const mixPicaDetails: MixPicaData = {
     name: t("mixPizza"),
-    image: "/pizza-image.png",
+    image:
+      "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274840/pizza-image_a6vcm1.png",
     description: `5 ${t("ingredients")} (2+3)`,
     baseSauce: t("tomatoSauce") + " ®",
     basePrice: 12.99,
@@ -137,7 +138,7 @@ const MixPicaDetailModal: React.FC<MixPicaDetailModalProps> = ({
         <DialogHeader className="bg-black text-white p-3 flex flex-row items-center justify-between rounded-t-lg">
           <div className="flex items-center gap-2">
             <Image
-              src="/Logo-ProfPizza.png"
+              src="https://res.cloudinary.com/daspo1tk3/image/upload/v1751274816/Logo-ProfPizza_d72bmu.png"
               alt="Prof Pizza"
               width={25}
               height={25}

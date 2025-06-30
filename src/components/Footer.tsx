@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
               height={60}
               priority
               quality={100}
-              src="/Logo-ProfPizza.png"
+              src="https://res.cloudinary.com/daspo1tk3/image/upload/v1751274816/Logo-ProfPizza_d72bmu.png"
               alt="Prof Pizza Logo"
               className="object-contain sm:w-[70px] sm:h-[70px]"
             />
@@ -33,7 +33,7 @@ const Footer: React.FC = () => {
               height={60}
               priority
               quality={100}
-              src="/Logo-KebabPrime.png"
+              src="https://res.cloudinary.com/daspo1tk3/image/upload/v1751274803/Logo-KebabPrime_w7ie8q.png"
               alt="Kebab Prime Logo"
               className="object-contain sm:w-[70px] sm:h-[70px]"
             />

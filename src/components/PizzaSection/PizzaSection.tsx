@@ -20,8 +20,8 @@ const PizzaSection: React.FC = () => {
       id: "p1",
       itemNumberForModal: 1,
       name: "Pizza Classica",
-      img: "/Pizza-1.webp",
-      modalImage: "/Pizza-1.webp",
+      img: "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274877/Pizza-1_ta0fcd.webp",
+      modalImage: "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274877/Pizza-1_ta0fcd.webp",
       desc:
         t("cookedHam") +
         ", " +
@@ -239,8 +239,8 @@ const PizzaSection: React.FC = () => {
       id: "p2",
       itemNumberForModal: 2,
       name: "Pizza Mediterranea",
-      img: "/Pizza-2.webp",
-      modalImage: "/Pizza-2.webp",
+      img: "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274839/Pizza-2_xfwimr.webp",
+      modalImage: "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274839/Pizza-2_xfwimr.webp",
       desc:
         t("blueOnions") +
         ", " +
@@ -299,8 +299,8 @@ const PizzaSection: React.FC = () => {
       id: "p3",
       itemNumberForModal: 3,
       name: "Pizza Rustica",
-      img: "/Pizza-3.webp",
-      modalImage: "/Pizza-3.webp",
+      img: "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274839/Pizza-3_ebnwws.webp",
+      modalImage: "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274839/Pizza-3_ebnwws.webp",
       desc:
         t("mushrooms") +
         ", " +
@@ -367,20 +367,26 @@ const PizzaSection: React.FC = () => {
   // Display items with proper typing
   const pizzaListDisplayItems: PizzaDisplayItem[] = [
     {
-      image: "/Pizza-1.webp",
-      numberImage: "/1.webp",
+      image:
+        "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274877/Pizza-1_ta0fcd.webp",
+      numberImage:
+        "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274870/1_geqoqd.webp",
       text: [t("paprika"), t("olives"), t("smokedCheese")],
       modalDataId: "p1",
     },
     {
-      image: "/Pizza-2.webp",
-      numberImage: "/2-1.webp",
+      image:
+        "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274839/Pizza-2_xfwimr.webp",
+      numberImage:
+        "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274870/2-1_aslihm.webp",
       text: [t("blueOnions"), t("cherryTomatoes"), t("freshBasil")],
       modalDataId: "p2",
     },
     {
-      image: "/Pizza-3.webp",
-      numberImage: "/3-1.webp",
+      image:
+        "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274839/Pizza-3_ebnwws.webp",
+      numberImage:
+        "https://res.cloudinary.com/daspo1tk3/image/upload/v1751274870/3-1_x15ywk.webp",
       text: [t("mushrooms"), t("blueOnions"), t("broccoli")],
       modalDataId: "p3",
     },
