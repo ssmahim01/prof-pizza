@@ -37,8 +37,6 @@
    git clone https://github.com/ssmahim01/prof-pizza.git
    ```
 
-````
-
 2. Navigate to the project folder:
 
    ```bash
