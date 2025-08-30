@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="left">
+  <img src="/public/prof-pizza.png" alt="Prof Pizza UI" width="100%" height="370"/>
+  <h1>Prof Pizza 🍕🥤</h1>
+  <p>Prof Pizza is a Lithuanian fast-food project specializing in street-style pizzas, beverages, and quick bites. It provides a simple, convenient, and delicious way for customers to order their favorite fast food online or on the go.</p>
 
-## Getting Started
+  <p>
+    <a target="_blank" href="https://prof-pizza.vercel.app">
+      <img src="https://img.shields.io/badge/Live%20Demo-Prof%20Pizza-brightgreen" alt="Live Demo"/>
+    </a>
+  </p>
+</div>
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🌟 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 🍕 Wide variety of street-style pizzas
+- 🥤 Refreshing beverages and combos
+- ⚡ Quick and user-friendly ordering experience
+- 📱 Mobile-friendly and responsive design
+- 🍴 Menu organized for easy browsing
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 💻 Tech Stack
 
-## Learn More
+- **Frontend:** Next.js, TypeScript, Framer Motion, Shadcn UI, i18Next, Tailwind CSS
+- **Backend:** Node.js / Express (if applicable)
+- **Database:** MongoDB / NoSQL (if applicable)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ssmahim01/prof-pizza.git
+   ```
 
-## Deploy on Vercel
+````
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Navigate to the project folder:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   cd prof-pizza
+   ```
+3. Install dependencies (if using Node.js):
+
+   ```bash
+   npm install
+   ```
+4. Start the project:
+
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## 📌 Usage
+
+* Open your browser and visit `http://localhost:3000` (or your deployed link)
+* Browse pizzas, beverages, and combos
+* Place orders easily with a smooth interface
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to:
+
+* Open issues for bugs or features
+* Submit pull requests to improve the project
+
+---
+
+## 📞 Contact
+
+* Email: [saymanshakilmahim03@gmail.com](mailto:saymanshakilmahim03@gmail.com)
+* Phone: +8801818788816
+* Website / Live Demo: https://prof-pizza.vercel.app(#)
+
+---
+
+> Made with ❤️ SS Mahim
