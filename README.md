@@ -76,7 +76,7 @@ Contributions are welcome! Feel free to:
 
 * Email: [saymanshakilmahim03@gmail.com](mailto:saymanshakilmahim03@gmail.com)
 * Phone: +8801818788816
-* Website / Live Demo: https://prof-pizza.vercel.app(#)
+* Website / Live Demo: https://prof-pizza.vercel.app
 
 ---
 
